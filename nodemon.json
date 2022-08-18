@@ -3,6 +3,11 @@
     "src"
   ],
   "ext": ".ts",
-  "ignore": [],
-  "exec": "ts-node ./src/index.ts"
+  "ignore": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    ".git",
+    "node_modules"
+  ],
+  "exec": "ts-node -r tsconfig-paths/register ./src/index.ts"
 }
