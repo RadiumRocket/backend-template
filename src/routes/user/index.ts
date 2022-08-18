@@ -1,10 +1,6 @@
 import express from 'express';
 
-import userSchema from 'src/models/user';
-
 import controllers from './controllers';
-
-console.log('userSchema: ', userSchema);
 
 const router = express.Router();
 
