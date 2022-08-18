@@ -1,14 +1,22 @@
 import cors from 'cors';
 import express, { Express, Response } from 'express';
 
+import router from './routes';
+
 const app: Express = express();
 
 app.use(cors());
 
 app.use(express.json());
 
-app.get('/', (_req, res: Response) => {
-  res.send('Server is up ✅');
+app.use('/', router);
+
+app.get('/health', (_req, res: Response) => {
+  res.status(200).send({
+    message: 'Server is up ✅',
+    data: undefined,
+    error: false,
+  });
 });
 
 export default app;
