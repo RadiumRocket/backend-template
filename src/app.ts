@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use('/', router);
 
-app.get('/health', (_req, res: Response) => {
+app.get('/', (_req, res: Response) => {
   res.status(200).send({
     message: 'Server is up ✅',
     data: undefined,
