@@ -3,17 +3,12 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
-  # Modify on future envs
   push:
     branches:
       - stage
 
-  pull_request:
-    branches:
-      - stage
-
 jobs:
-  test-and-deploy-stage:
+  lint-and-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,10 +16,31 @@ jobs:
 
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: mskelton/setup-yarn@v1
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Type check
+        run: yarn type-check
 
       - name: Check linting
         run: yarn lint
@@ -32,12 +48,34 @@ jobs:
       - name: Run the tests
         run: yarn test
 
+  deploy:
+    needs: [lint-and-test]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.17.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache global modules
+        id: cache-global-nodemodules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-global-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+
+      - name: Install Vercel CLI
+        if: steps.cache-global-nodemodules.outputs.cache-hit != 'true'
+        run: npm install --global vercel@latest
+
       - name: Pull Vercel Environment Information
         # Possible envs => development / preview / production
-        run: yarn vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: yarn vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts to Vercel
-        run: yarn vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
