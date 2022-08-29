@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - 'hotfix/**'
+  pull_request_target:
+    branches:
+      - stage
   push:
     branches:
       - stage

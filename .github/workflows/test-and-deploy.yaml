@@ -7,6 +7,9 @@ on:
     branches:
       - 'feature/**'
       - 'fix/**'
+  pull_request_target:
+    branches:
+      - develop
   push:
     branches:
       - develop
