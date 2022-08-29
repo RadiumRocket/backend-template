@@ -3,12 +3,11 @@ env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
-  pull_request_target:
-    branches:
-      - develop
   push:
     branches:
       - develop
+      - 'feature/**'
+      - 'fix/**'
 
 jobs:
   lint-and-test:
