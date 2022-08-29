@@ -89,11 +89,11 @@ jobs:
         node-version: [16.17.x]
 
     steps:
-      - name: Waiting for 200 from the Vercel Preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
-        id: waitFor200
+      - uses: actions/checkout@v2
+      - uses: amondnet/vercel-action@v19
+        id: vercel
         with:
-          token: ${{ secrets.TOKEN_GITHUB }}
-          max_timeout: 60
-      # access preview url
-      - run: echo ${{steps.waitFor200.outputs.url}}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.TOKEN_GITHUB }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
