@@ -5,6 +5,7 @@ env:
 on:
   push:
     branches:
+      - 'hotfix/**'
       - stage
 
 jobs:
@@ -79,3 +80,20 @@ jobs:
 
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+  show-url:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.17.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: amondnet/vercel-action@v19
+        id: vercel
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.TOKEN_GITHUB }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
