@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
 import fs from 'fs';
 
+import users from '../../data/users';
 import { User } from './types';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const users: User[] = require('../../data/users.json');
 
 const getAllUsers = (req: Request, res: Response) => {
   try {

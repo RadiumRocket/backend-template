@@ -1,0 +1,31 @@
+name: Develop deploy
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  lint-and-test:
+    uses: ./.github/workflows/lint-and-test.yaml
+
+  deploy-develop:
+    needs: [lint-and-test]
+    uses: ./.github/workflows/deploy.yaml
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  sync-with-test:
+    needs: [deploy-develop]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create test pull request
+        id: open-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: 'test'
+          pr_title: '[AUTOMATED] Pulling develop into test'
+          pr_body: ':robot: Automated PR to deploy test env on Vercel'
+          pr_label: deploy-test
+          github_token: ${{ secrets.GITHUB_TOKEN }}

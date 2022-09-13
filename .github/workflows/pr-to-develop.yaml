@@ -1,0 +1,16 @@
+name: Pull request to develop
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  lint-and-test:
+    uses: ./.github/workflows/lint-and-test.yaml
+
+  deploy-branch:
+    needs: [lint-and-test]
+    uses: ./.github/workflows/deploy.yaml
+    secrets:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

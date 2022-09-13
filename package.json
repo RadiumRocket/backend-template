@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start:prod": "yarn build && node dist/index.js",
+    "start:build": "node dist/index.js",
     "start": "nodemon",
     "test": "jest",
+    "type-check": "tsc --noEmit",
     "lint": "eslint \"./**/*.{ts,test.ts}\"",
     "format": "prettier --write './**/*.{ts,test.ts}' --config ./.prettierrc",
     "lint:fix": "eslint --fix && yarn format",
-    "pre-commit": "yarn lint && yarn test --watchAll=false",
+    "pre-commit": "yarn type-check && yarn lint && yarn test --watchAll=false",
+    "set:dev": "vercel env pull .env.dev",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -48,6 +50,7 @@
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vercel": "^28.1.0"
   }
 }
