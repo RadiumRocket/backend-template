@@ -3,6 +3,8 @@ name: Deploy and comment job
 on:
   workflow_call:
     secrets:
+      VERCEL_TEAM_NAME:
+        required: true
       VERCEL_TOKEN:
         required: true
 
