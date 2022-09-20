@@ -27,7 +27,7 @@ jobs:
           VERCEL_SCOPE: ${{ secrets.VERCEL_TEAM_NAME }}
           PRODUCTION: false
           BUILD_ENV: |
-            REACT_APP_SHOW_ENV=${{ secrets.REACT_APP_SHOW_ENV }}
+            ENV=${{ secrets.ENV }}
           ALIAS_DOMAINS: |
             https://uat.${{ secrets.APP_DOMAIN }}
 

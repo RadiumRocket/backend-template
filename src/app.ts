@@ -13,7 +13,7 @@ app.use('/', router);
 
 app.get('/', (_req, res: Response) => {
   res.status(200).send({
-    message: 'Server is up ✅',
+    message: 'Server is up ✅ - Environment: ' + process.env.ENV + ' ' + process.env.HOLA,
     data: undefined,
     error: false,
   });
