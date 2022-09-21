@@ -1,4 +1,4 @@
-name: Deploy Develop
+name: Deploy Production
 on:
   push:
     branches:
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: |
+        run: | # ADD ALL ENV VARIABLES HERE
           yarn
           ENV=${{ secrets.ENV }} \
           yarn build

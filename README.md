@@ -1,5 +1,12 @@
 # Getting started with ${App Name}
 
+## Domains
+
+- https://{url}.radiumrocket.com Production (master)
+- https://{url}.radiumrocket.com UAT (uat)
+- https://{url}.radiumrocket.com Test (test)
+- https://{url}.radiumrocket.com Develop (develop)
+
 ## Features
 
 **TODO**: Add libraries when they are fully integrated
