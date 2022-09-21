@@ -17,6 +17,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Build
+        run: |
+          yarn
+          ENV=${{ secrets.ENV }} \
+          yarn build
       - name: Deploy to Vercel Action
         uses: BetaHuhn/deploy-to-vercel-action@v1
         with:
@@ -26,8 +31,5 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_SCOPE: ${{ secrets.VERCEL_TEAM_NAME }}
           PRODUCTION: false
-          BUILD_ENV: |
-            ENV=${{ secrets.ENV }}
-            HOLA=hola
           ALIAS_DOMAINS: |
             https://${{ secrets.APP_DOMAIN }}
